@@ -123,21 +123,6 @@ tr:hover td{background:var(--bg3)}
 </head>
 <body>
 
-<div class="setup-screen" id="setup-screen">
-  <div class="setup-box">
-    <div class="setup-title">🏝️ 聲島獎金系統｜首次設定</div>
-    <div class="setup-sub">需要連接 Google Apps Script 作為後端，只需設定一次，之後所有裝置打開都會自動同步。</div>
-    <div class="step"><div class="step-num">1</div><div class="step-text">開啟 <a href="https://script.google.com" target="_blank">script.google.com</a>，建立新專案，將提供的 <strong>.gs 程式碼</strong>貼上並儲存</div></div>
-    <div class="step"><div class="step-num">2</div><div class="step-text">點「部署」→「新增部署作業」→ 類型選 <strong>網頁應用程式</strong> → 存取權選 <strong>所有人</strong> → 點「部署」→ 授權</div></div>
-    <div class="step"><div class="step-num">3</div><div class="step-text">複製部署後出現的「網頁應用程式網址」，貼到下方</div></div>
-    <div class="ig" style="margin-top:1rem">
-      <label>Google Apps Script 網頁應用程式網址</label>
-      <input type="text" id="gas-url-input" placeholder="https://script.google.com/macros/s/...">
-    </div>
-    <button class="full" onclick="saveGasUrl()" style="margin-top:8px">連接並開始使用</button>
-  </div>
-</div>
-
 <nav>
   <div class="nav-brand">🏝️ 聲島 <span>獎金系統</span></div>
   <div class="nav-tabs">
@@ -219,7 +204,7 @@ const TIERS=[
   {min:30000,pool:3600}
 ];
 let members=[],records=[],selectedPartners=[],filterMember='all';
-let GAS_URL='';
+let GAS_URL='https://script.google.com/macros/s/AKfycbxiG_pbnU07lCBzQt76i5eZdErQkz7OaXKXVYCGpGTW6DlFWdvQanBRN5rUxl9eP7Iy/exec';
 
 function saveGasUrl(){
   const url=document.getElementById('gas-url-input').value.trim();
