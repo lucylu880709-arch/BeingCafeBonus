@@ -167,9 +167,8 @@ tr:hover td{background:var(--bg3)}
     <div class="met"><div class="met-l">本月獎金池總計</div><div class="met-v green" id="m-total">—</div></div>
     <div class="met"><div class="met-l">活躍夥伴</div><div class="met-v" id="m-members">—</div></div>
   </div>
-  <span class="reset-link" onclick="resetSetup()">重新設定 GAS 網址</span>
+ 
 </div>
-
 <div id="page-history" class="page">
   <p class="sec" style="margin-top:4px">月底結算</p>
   <div id="settle-section"></div>
@@ -205,25 +204,6 @@ const TIERS=[
 ];
 let members=[],records=[],selectedPartners=[],filterMember='all';
 let GAS_URL='https://script.google.com/macros/s/AKfycbxiG_pbnU07lCBzQt76i5eZdErQkz7OaXKXVYCGpGTW6DlFWdvQanBRN5rUxl9eP7Iy/exec';
-
-function saveGasUrl(){
-  const url=document.getElementById('gas-url-input').value.trim();
-  if(!url.startsWith('https://script.google.com')){alert('請貼上正確的 Google Apps Script 網址');return;}
-  localStorage.setItem('bc_gas_url',url);
-  GAS_URL=url;
-  document.getElementById('setup-screen').style.display='none';
-  loadData();
-}
-function checkSetup(){
-  const saved=localStorage.getItem('bc_gas_url');
-  if(saved){GAS_URL=saved;document.getElementById('setup-screen').style.display='none';return true;}
-  return false;
-}
-function resetSetup(){
-  if(!confirm('確定要重新設定 GAS 網址？'))return;
-  localStorage.removeItem('bc_gas_url');
-  location.reload();
-}
 
 function setSyncing(){document.getElementById('sync-dot').className='sync-dot loading';document.getElementById('sync-text').textContent='同步中…';}
 function setSynced(){document.getElementById('sync-dot').className='sync-dot';document.getElementById('sync-text').textContent='已同步';}
@@ -331,7 +311,7 @@ async function addRecord(){
   btn.disabled=true;btn.textContent='儲存中…';setSyncing();
   try{
     await apiPost({action:'saveRecord',record});
-    records.unshift(record);selectedPartners=[];
+await loadData();selectedPartners=[];
     document.getElementById('inp-rev').value='';
     document.getElementById('inp-date').value=todayStr();
     refreshPartnerSelect();renderChips();calc();updateMonth();
@@ -430,16 +410,46 @@ function renderSettle(){
 async function addMember(){
   const inp=document.getElementById('new-member-input');
   const name=inp.value.trim();
-  if(!name){toast('請輸入姓名');return;}
-  if(members.find(m=>m.name===name)){toast('此夥伴已存在');return;}
-  const member={name,since:todayStr()};
+
+  if(!name){
+    toast('請輸入姓名');
+    return;
+  }
+
+  if(members.find(m=>m.name===name)){
+    toast('此夥伴已存在');
+    return;
+  }
+
+  const member={
+    name,
+    since:todayStr()
+  };
+
   setSyncing();
+
   try{
-    await apiPost({action:'saveMember',member});
-    members.push(member);inp.value='';
-    refreshPartnerSelect();renderMembers();
-    setSynced();toast(name+' 已加入 ✓');
-  }catch(e){setSyncError();toast('新增失敗');}
+    await apiPost({
+      action:'saveMember',
+      member
+    });
+
+    inp.value='';
+
+    // 重新從 Google Sheet 同步
+    await loadData();
+
+    refreshPartnerSelect();
+    renderMembers();
+
+    setSynced();
+
+    toast(name+' 已加入 ✓');
+
+  }catch(e){
+    setSyncError();
+    toast('新增失敗');
+  }
 }
 
 async function deleteMemberByName(name){
@@ -485,7 +495,7 @@ function renderTierTable(){
 function renderAll(){refreshPartnerSelect();renderChips();updateMonth();renderTierTable();}
 
 document.getElementById('inp-date').value=todayStr();
-if(checkSetup())loadData();
+loadData();
 </script>
 </body>
 </html>
