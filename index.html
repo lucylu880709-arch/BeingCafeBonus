@@ -430,16 +430,51 @@ function renderSettle(){
 async function addMember(){
   const inp=document.getElementById('new-member-input');
   const name=inp.value.trim();
-  if(!name){toast('請輸入姓名');return;}
-  if(members.find(m=>m.name===name)){toast('此夥伴已存在');return;}
-  const member={name,since:todayStr()};
+
+  if(!name){
+    toast('請輸入姓名');
+    return;
+  }
+
+  if(members.find(m=>m.name===name)){
+    toast('此夥伴已存在');
+    return;
+  }
+
+  const member={
+    name,
+    since:todayStr()
+  };
+
   setSyncing();
+
   try{
-    await apiPost({action:'saveMember',member});
-    members.push(member);inp.value='';
-    refreshPartnerSelect();renderMembers();
-    setSynced();toast(name+' 已加入 ✓');
-  }catch(e){setSyncError();toast('新增失敗');}
+    const result = await apiPost({
+      action:'saveMember',
+      member
+    });
+
+    if(!result.ok){
+      toast(result.error || '新增失敗');
+      setSyncError();
+      return;
+    }
+
+    inp.value='';
+
+    // 重新同步正式資料
+    await loadData();
+
+    refreshPartnerSelect();
+    renderMembers();
+
+    setSynced();
+    toast(name+' 已加入 ✓');
+
+  }catch(e){
+    setSyncError();
+    toast('新增失敗');
+  }
 }
 
 async function deleteMemberByName(name){
