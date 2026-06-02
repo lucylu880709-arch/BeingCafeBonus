@@ -14,19 +14,20 @@
   --green:#2ECC8E;--green-dim:#1A3D2E;
   --gold:#F5C842;--red:#E05252;--red-dim:#3A1515;
   --blue:#5B8DEF;--blue-dim:#1A2540;
+  --purple:#A78BFA;--purple-dim:#1E1A3A;
   --radius:10px;--radius-sm:6px;
   --mono:'DM Mono',monospace;--sans:'Noto Sans TC',sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;padding-bottom:3rem}
-nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 1.25rem;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100}
-.nav-brand{font-size:14px;font-weight:600;letter-spacing:.05em}
+nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 1.25rem;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100;gap:8px}
+.nav-brand{font-size:14px;font-weight:600;letter-spacing:.05em;white-space:nowrap}
 .nav-brand span{color:var(--green)}
-.nav-tabs{display:flex;gap:2px}
-.nav-tab{padding:6px 12px;border-radius:var(--radius-sm);font-size:13px;cursor:pointer;color:var(--text2);border:none;background:none;transition:all .15s;font-family:var(--sans)}
+.nav-tabs{display:flex;gap:2px;flex-wrap:wrap}
+.nav-tab{padding:6px 10px;border-radius:var(--radius-sm);font-size:12px;cursor:pointer;color:var(--text2);border:none;background:none;transition:all .15s;font-family:var(--sans)}
 .nav-tab:hover{color:var(--text);background:var(--bg3)}
 .nav-tab.active{color:var(--text);background:var(--bg3)}
-.sync-status{font-size:11px;color:var(--text3);font-family:var(--mono);display:flex;align-items:center;gap:5px}
+.sync-status{font-size:11px;color:var(--text3);font-family:var(--mono);display:flex;align-items:center;gap:5px;white-space:nowrap}
 .sync-dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
 .sync-dot.loading{background:var(--gold);animation:blink 1s infinite}
 .sync-dot.error{background:var(--red)}
@@ -36,7 +37,7 @@ nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 1.25re
 .sec{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:14px}
 label{display:block;font-size:12px;color:var(--text2);margin-bottom:5px}
-input[type=text],input[type=number],input[type=date],select{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text);font-family:var(--sans);font-size:14px;padding:9px 12px;outline:none;transition:border-color .15s;appearance:none;-webkit-appearance:none}
+input[type=text],input[type=number],input[type=date],input[type=month],select{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text);font-family:var(--sans);font-size:14px;padding:9px 12px;outline:none;transition:border-color .15s;appearance:none;-webkit-appearance:none}
 input:focus,select:focus{border-color:var(--green)}
 select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239A9B9E' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px;cursor:pointer}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
@@ -50,6 +51,8 @@ button.sec-btn{background:var(--bg3);color:var(--text2);border:1px solid var(--b
 button.sec-btn:hover{color:var(--text);opacity:1}
 button.danger-btn{background:var(--red-dim);color:var(--red);border:1px solid var(--red-dim)}
 button.danger-btn:hover{background:var(--red);color:#fff;opacity:1}
+button.purple-btn{background:var(--purple-dim);color:var(--purple);border:1px solid var(--purple)}
+button.purple-btn:hover{background:var(--purple);color:#fff;opacity:1}
 button.full{width:100%}
 button:disabled{opacity:.4;cursor:not-allowed}
 .chip-wrap{display:flex;flex-wrap:wrap;gap:6px;min-height:28px;padding:4px 0}
@@ -90,13 +93,15 @@ tr:hover td{background:var(--bg3)}
 .del-btn{background:none;border:none;color:var(--text3);cursor:pointer;padding:3px 6px;font-size:15px;border-radius:var(--radius-sm)}
 .del-btn:hover{background:var(--red-dim);color:var(--red);opacity:1}
 .settle-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:14px}
-.settle-head{padding:10px 1.25rem;background:var(--bg3);border-bottom:1px solid var(--border);font-size:12px;color:var(--text2);display:flex;justify-content:space-between;align-items:center}
+.settle-head{padding:10px 1.25rem;background:var(--bg3);border-bottom:1px solid var(--border);font-size:12px;color:var(--text2);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px}
 .settle-row{display:flex;justify-content:space-between;align-items:center;padding:12px 1.25rem;border-bottom:1px solid var(--border);transition:background .1s}
 .settle-row:last-child{border-bottom:none}
 .settle-row:hover{background:var(--bg3)}
 .settle-name{font-size:14px;font-weight:500}
 .settle-detail{font-size:11px;color:var(--text3);margin-top:2px}
 .settle-amt{font-size:18px;font-weight:600;font-family:var(--mono);color:var(--gold)}
+.settle-amt.purple{color:var(--purple)}
+.settle-amt.total-green{color:var(--green)}
 .member-item{display:flex;align-items:center;justify-content:space-between;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:8px}
 .member-name{font-size:14px}
 .member-since{font-size:11px;color:var(--text3);margin-top:2px}
@@ -106,27 +111,29 @@ tr:hover td{background:var(--bg3)}
 .tier-table tr:last-child td{border-bottom:none}
 .tier-table tr.hl td{color:var(--green);background:var(--green-dim)}
 .empty{text-align:center;color:var(--text3);font-size:13px;padding:2rem 0}
-.setup-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;padding:2rem}
-.setup-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;max-width:500px;width:100%}
-.setup-title{font-size:18px;font-weight:600;margin-bottom:8px}
-.setup-sub{font-size:13px;color:var(--text2);margin-bottom:1.5rem;line-height:1.7}
-.step{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start}
-.step-num{width:22px;height:22px;border-radius:50%;background:var(--green-dim);color:var(--green);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.step-text{font-size:13px;color:var(--text2);line-height:1.7}
-.step-text a{color:var(--blue);text-decoration:none}
-.step-text a:hover{text-decoration:underline}
-.step-text strong{color:var(--text)}
-.reset-link{font-size:11px;color:var(--text3);cursor:pointer;text-decoration:underline;margin-top:8px;display:inline-block}
 .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--border);color:var(--text);font-size:13px;padding:10px 20px;border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transition:opacity .2s;pointer-events:none;z-index:9999;white-space:nowrap}
 .toast.show{opacity:1}
+/* 特調抽成 */
+.special-rate-box{background:var(--purple-dim);border:1px solid var(--purple);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.special-rate-num{font-size:32px;font-weight:600;font-family:var(--mono);color:var(--purple)}
+.special-rate-dim{font-size:11px;color:var(--text3);margin-bottom:4px}
+.special-rate-sub{font-size:12px;color:var(--purple);opacity:.8;margin-top:4px}
+.special-member-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px}
+.special-member-name{font-size:13px;flex:1;min-width:60px}
+.special-member-result{font-size:13px;font-family:var(--mono);color:var(--purple);width:72px;text-align:right;flex-shrink:0}
+.divider{height:1px;background:var(--border);margin:14px 0}
+.info-note{font-size:11px;color:var(--text3);background:var(--bg3);border-radius:var(--radius-sm);padding:8px 12px;margin-bottom:12px;line-height:1.7}
+.total-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--border2)}
+.total-label{font-size:12px;color:var(--text2)}
+.total-val{font-size:18px;font-weight:600;font-family:var(--mono);color:var(--green)}
 </style>
 </head>
 <body>
-
 <nav>
   <div class="nav-brand">🏝️ 聲島 <span>獎金系統</span></div>
   <div class="nav-tabs">
     <button class="nav-tab active" onclick="showPage('record',this)">今日記錄</button>
+    <button class="nav-tab" onclick="showPage('special',this)">特調抽成</button>
     <button class="nav-tab" onclick="showPage('history',this)">歷史／結算</button>
     <button class="nav-tab" onclick="showPage('members',this)">夥伴管理</button>
     <button class="nav-tab" onclick="showPage('tiers',this)">獎金表</button>
@@ -134,13 +141,14 @@ tr:hover td{background:var(--bg3)}
   <div class="sync-status"><div class="sync-dot" id="sync-dot"></div><span id="sync-text">已同步</span></div>
 </nav>
 <div id="toast" class="toast"></div>
-
+ 
+<!-- 今日記錄 -->
 <div id="page-record" class="page active">
   <p class="sec" style="margin-top:4px">今日記錄</p>
   <div class="card">
     <div class="row2">
       <div class="ig"><label>日期</label><input type="date" id="inp-date"></div>
-      <div class="ig"><label>當日營業額（元）</label><input type="number" id="inp-rev" placeholder="例：18000" min="0" step="500" oninput="calc()"></div>
+      <div class="ig"><label>當日營業額（元）</label><input type="number" id="inp-rev" placeholder="例：20000" min="0" step="1000" oninput="calc()"></div>
     </div>
     <div class="ig">
       <label>新增當班夥伴</label>
@@ -167,16 +175,66 @@ tr:hover td{background:var(--bg3)}
     <div class="met"><div class="met-l">本月獎金池總計</div><div class="met-v green" id="m-total">—</div></div>
     <div class="met"><div class="met-l">活躍夥伴</div><div class="met-v" id="m-members">—</div></div>
   </div>
- 
 </div>
+ 
+<!-- 夥伴特調抽成 -->
+<div id="page-special" class="page">
+  <p class="sec" style="margin-top:4px">夥伴特調抽成</p>
+ 
+  <div class="special-rate-box">
+    <div>
+      <div class="special-rate-dim">每售出 1 份抽成</div>
+      <div class="special-rate-num">30 元 / 份</div>
+      <div class="special-rate-sub">無最低門檻 · 每月底隨薪資結算</div>
+    </div>
+  </div>
+ 
+  <div class="info-note">💡 特調抽成為月底統一結算，不需每天輸入。請在月底時填入當月各夥伴的特調銷售份數，儲存後可在「歷史／結算」中查看合計。</div>
+ 
+  <div class="card">
+    <div class="row2">
+      <div class="ig">
+        <label>結算月份</label>
+        <input type="month" id="special-month">
+      </div>
+      <div class="ig" style="display:flex;align-items:flex-end">
+        <button onclick="saveSpecial()" class="full purple-btn">儲存本月抽成</button>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <p style="font-size:12px;color:var(--text2)">夥伴銷售份數</p>
+      <p style="font-size:11px;color:var(--text3)">@ 30 元 / 份</p>
+    </div>
+    <div id="special-member-rows">
+      <div class="empty">請先在「夥伴管理」新增夥伴</div>
+    </div>
+    <div class="divider"></div>
+    <div class="total-row">
+      <span class="total-label">本月特調抽成合計</span>
+      <span class="total-val" id="special-total-preview">0 元</span>
+    </div>
+  </div>
+ 
+  <p class="sec">歷史抽成記錄</p>
+  <div id="special-history-section"></div>
+</div>
+ 
+<!-- 歷史／結算 -->
 <div id="page-history" class="page">
   <p class="sec" style="margin-top:4px">月底結算</p>
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+    <button class="sec-btn" onclick="shiftMonth(-1)" style="padding:6px 12px;font-size:16px;">‹</button>
+    <div style="flex:1;text-align:center;font-family:var(--mono);font-size:14px;color:var(--text)" id="settle-month-label">—</div>
+    <button class="sec-btn" onclick="shiftMonth(1)" id="settle-next-btn" style="padding:6px 12px;font-size:16px;">›</button>
+  </div>
   <div id="settle-section"></div>
   <p class="sec">篩選／歷史記錄</p>
   <div class="filter-row"><span class="filter-label">夥伴：</span><span class="ftag on" id="ft-all" onclick="setFilter('all')">全部</span><span id="ft-tags"></span></div>
   <div class="card" style="padding:0"><div class="table-wrap" id="hist-wrap"></div></div>
 </div>
-
+ 
+<!-- 夥伴管理 -->
 <div id="page-members" class="page">
   <p class="sec" style="margin-top:4px">夥伴名單（<span id="member-count">0</span> 位）</p>
   <div class="card">
@@ -187,28 +245,36 @@ tr:hover td{background:var(--bg3)}
   </div>
   <div id="member-list"></div>
 </div>
-
+ 
+<!-- 獎金對照表 -->
 <div id="page-tiers" class="page">
   <p class="sec" style="margin-top:4px">聲島共創獎金對照表</p>
   <div class="card" style="padding:0"><table class="tier-table" id="tier-table"></table></div>
 </div>
-
+ 
 <script>
+// ─── 新獎金級距：16,000 起，封頂 30,000 / 2,000元 ───
 const TIERS=[
-  {min:15000,pool:300},{min:16000,pool:400},{min:17000,pool:500},
-  {min:18000,pool:650},{min:19000,pool:800},{min:20000,pool:1000},
-  {min:21000,pool:1200},{min:22000,pool:1400},{min:23000,pool:1600},
-  {min:24000,pool:1800},{min:25000,pool:2100},{min:26000,pool:2400},
-  {min:27000,pool:2700},{min:28000,pool:3000},{min:29000,pool:3300},
-  {min:30000,pool:3600}
+  {min:16000,pool:200},
+  {min:17000,pool:300},
+  {min:18000,pool:400},
+  {min:19000,pool:500},
+  {min:20000,pool:650},
+  {min:22000,pool:800},
+  {min:24000,pool:1000},
+  {min:26000,pool:1200},
+  {min:28000,pool:1600},
+  {min:30000,pool:2000}
 ];
-let members=[],records=[],selectedPartners=[],filterMember='all';
+const SPECIAL_RATE=30;
+ 
+let members=[],records=[],specialRecords=[],selectedPartners=[],filterMember='all',settleYM='';
 let GAS_URL='https://script.google.com/macros/s/AKfycbxiG_pbnU07lCBzQt76i5eZdErQkz7OaXKXVYCGpGTW6DlFWdvQanBRN5rUxl9eP7Iy/exec';
-
+ 
 function setSyncing(){document.getElementById('sync-dot').className='sync-dot loading';document.getElementById('sync-text').textContent='同步中…';}
 function setSynced(){document.getElementById('sync-dot').className='sync-dot';document.getElementById('sync-text').textContent='已同步';}
 function setSyncError(){document.getElementById('sync-dot').className='sync-dot error';document.getElementById('sync-text').textContent='同步失敗';}
-
+ 
 async function apiGet(){
   const res=await fetch(GAS_URL+'?action=getAll');
   if(!res.ok)throw new Error('GET failed');
@@ -219,15 +285,28 @@ async function apiPost(body){
   if(!res.ok)throw new Error('POST failed');
   return res.json();
 }
+function loadLocalSpecial(){try{return JSON.parse(localStorage.getItem('specialRecords')||'[]');}catch(e){return[];}}
+function saveLocalSpecial(data){try{localStorage.setItem('specialRecords',JSON.stringify(data));}catch(e){}}
 async function loadData(){
   setSyncing();
   try{
     const data=await apiGet();
-    records=data.records||[];members=data.members||[];
+    records=data.records||[];
+    members=data.members||[];
+    const gasSpecial=data.specialRecords||[];
+    const localSpecial=loadLocalSpecial();
+    const mergedMap={};
+    localSpecial.forEach(s=>{mergedMap[s.month]=s;});
+    gasSpecial.forEach(s=>{mergedMap[s.month]=s;});
+    specialRecords=Object.values(mergedMap).sort((a,b)=>b.month.localeCompare(a.month));
     setSynced();renderAll();
-  }catch(e){setSyncError();toast('無法連接伺服器，請確認 GAS 網址與權限設定');}
+  }catch(e){
+    specialRecords=loadLocalSpecial();
+    setSyncError();toast('無法連接伺服器，特調資料使用本地備援');
+    renderAll();
+  }
 }
-
+ 
 function getBonus(r){for(let i=TIERS.length-1;i>=0;i--)if(r>=TIERS[i].min)return TIERS[i].pool;return 0;}
 function getNext(r){for(let t of TIERS)if(r<t.min)return t;return null;}
 function getCur(r){let c=null;for(let t of TIERS)if(r>=t.min)c=t;return c;}
@@ -235,25 +314,25 @@ function fmtMoney(n){return n.toLocaleString()+' 元';}
 function todayStr(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0')+'-'+d.getDate().toString().padStart(2,'0');}
 function thisYM(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0');}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
-
+ 
 function showPage(id,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   btn.classList.add('active');
-  if(id==='history'){renderHistory();renderSettle();}
+  if(id==='history'){if(!settleYM)settleYM=thisYM();updateSettleMonthUI();renderHistory();renderSettle();}
   if(id==='members'){renderMembers();}
   if(id==='tiers'){renderTierTable();}
+  if(id==='special'){renderSpecialPage();}
 }
-
+ 
 function refreshPartnerSelect(){
   const sel=document.getElementById('partner-select');
   sel.innerHTML='<option value="">── 選擇夥伴 ──</option>';
   members.forEach(m=>{if(!selectedPartners.includes(m.name)){const o=document.createElement('option');o.value=m.name;o.textContent=m.name;sel.appendChild(o);}});
 }
 function addPartner(){
-  const sel=document.getElementById('partner-select');
-  const name=sel.value;if(!name)return;
+  const sel=document.getElementById('partner-select');const name=sel.value;if(!name)return;
   if(!selectedPartners.includes(name))selectedPartners.push(name);
   refreshPartnerSelect();renderChips();calc();
 }
@@ -268,7 +347,6 @@ function renderChips(){
     chip.appendChild(ns);chip.appendChild(x);wrap.appendChild(chip);
   });
 }
-
 function calc(){
   const rev=parseInt(document.getElementById('inp-rev').value)||0;
   const hc=selectedPartners.length||1;
@@ -279,7 +357,7 @@ function calc(){
   if(rev<=0){poolEl.className='pool-muted';poolEl.textContent='輸入營業額後顯示';perBlock.style.display='none';progWrap.style.display='none';return;}
   progWrap.style.display='block';
   const cur=getCur(rev);const next=getNext(rev);
-  document.getElementById('tier-cur').textContent=cur?'已達 '+cur.min.toLocaleString()+' 元':'尚未達最低門檻';
+  document.getElementById('tier-cur').textContent=cur?'已達 '+cur.min.toLocaleString()+' 元':'尚未達最低門檻（16,000 元）';
   if(next){
     const base=cur?cur.min:0;
     const pct=Math.min(100,Math.round((rev-base)/(next.min-base)*100));
@@ -288,16 +366,16 @@ function calc(){
     document.getElementById('prog-sub').textContent='下一級獎金池：'+next.pool.toLocaleString()+' 元';
   }else{
     document.getElementById('prog-fill').style.width='100%';
-    document.getElementById('tier-next').textContent='已達封頂';
-    document.getElementById('prog-sub').textContent='封頂獎金池 3,600 元';
+    document.getElementById('tier-next').textContent='封頂 🎉';
+    document.getElementById('prog-sub').textContent='封頂獎金池 2,000 元（30,000 元以上）';
   }
   if(bonus>0){
     poolEl.className='pool-val';poolEl.textContent=fmtMoney(bonus);
     perBlock.style.display='block';
     document.getElementById('per-val').textContent=fmtMoney(Math.floor(bonus/hc));
-  }else{poolEl.className='pool-muted';poolEl.textContent='未達門檻（最低 15,000 元）';perBlock.style.display='none';}
+  }else{poolEl.className='pool-muted';poolEl.textContent='未達門檻（最低 16,000 元）';perBlock.style.display='none';}
 }
-
+ 
 async function addRecord(){
   const rev=parseInt(document.getElementById('inp-rev').value)||0;
   const dateVal=document.getElementById('inp-date').value||todayStr();
@@ -311,7 +389,7 @@ async function addRecord(){
   btn.disabled=true;btn.textContent='儲存中…';setSyncing();
   try{
     await apiPost({action:'saveRecord',record});
-await loadData();selectedPartners=[];
+    await loadData();selectedPartners=[];
     document.getElementById('inp-rev').value='';
     document.getElementById('inp-date').value=todayStr();
     refreshPartnerSelect();renderChips();calc();updateMonth();
@@ -319,7 +397,6 @@ await loadData();selectedPartners=[];
   }catch(e){setSyncError();toast('儲存失敗，請檢查網路');}
   btn.disabled=false;btn.textContent='記錄今日獎金';
 }
-
 async function deleteRecord(id){
   if(!confirm('確定刪除這筆記錄？'))return;
   setSyncing();
@@ -330,7 +407,7 @@ async function deleteRecord(id){
     setSynced();toast('已刪除');
   }catch(e){setSyncError();toast('刪除失敗');}
 }
-
+ 
 function updateMonth(){
   const ym=thisYM();
   const monthly=records.filter(r=>r.date.startsWith(ym));
@@ -341,14 +418,13 @@ function updateMonth(){
   document.getElementById('m-total').textContent=fmtMoney(total);
   document.getElementById('m-members').textContent=mset.size+' 人';
 }
-
+ 
 function setFilter(m){
   filterMember=m;
   document.getElementById('ft-all').className='ftag'+(m==='all'?' on':'');
   document.querySelectorAll('.ftag-member').forEach(el=>{el.className='ftag ftag-member'+(el.dataset.name===m?' on':'');});
   renderHistory();
 }
-
 function renderHistory(){
   const allNames=[...new Set(records.flatMap(r=>r.names))];
   const ftTags=document.getElementById('ft-tags');ftTags.innerHTML='';
@@ -359,7 +435,9 @@ function renderHistory(){
     span.addEventListener('click',function(){setFilter(this.dataset.name);});
     ftTags.appendChild(span);
   });
-  const data=filterMember==='all'?records:records.filter(r=>r.names.includes(filterMember));
+  const ym=settleYM||thisYM();
+  const baseRecords=records.filter(r=>r.date.startsWith(ym));
+  const data=filterMember==='all'?baseRecords:baseRecords.filter(r=>r.names.includes(filterMember));
   const wrap=document.getElementById('hist-wrap');
   if(data.length===0){wrap.innerHTML='<div class="empty">尚無記錄</div>';return;}
   const table=document.createElement('table');
@@ -381,77 +459,183 @@ function renderHistory(){
   });
   table.appendChild(tbody);wrap.innerHTML='';wrap.appendChild(table);
 }
-
+ 
+function shiftMonth(dir){
+  const d=new Date(settleYM+'-01');
+  d.setMonth(d.getMonth()+dir);
+  const next=d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0');
+  // 不允許超過當月
+  if(next>thisYM())return;
+  settleYM=next;
+  updateSettleMonthUI();
+  renderHistory();
+  renderSettle();
+}
+function updateSettleMonthUI(){
+  const label=document.getElementById('settle-month-label');
+  const nextBtn=document.getElementById('settle-next-btn');
+  if(label)label.textContent=settleYM+' 月份';
+  if(nextBtn)nextBtn.disabled=(settleYM>=thisYM());
+}
 function renderSettle(){
-  const ym=thisYM();
+  const ym=settleYM||thisYM();
   const monthly=records.filter(r=>r.date.startsWith(ym));
   const map={};
   monthly.forEach(r=>{r.names&&r.names.forEach(n=>{if(!map[n])map[n]={days:0,total:0};if(r.bonus>0){map[n].days++;map[n].total+=r.per;}});});
-  const names=Object.keys(map);
+ 
+  // 加入特調抽成
+  const specialThisMonth=specialRecords.find(s=>s.month===ym);
+  const specialMap={};
+  if(specialThisMonth&&specialThisMonth.items){
+    specialThisMonth.items.forEach(item=>{if(item.qty>0)specialMap[item.name]=item.qty*SPECIAL_RATE;});
+  }
+ 
+  const names=[...new Set([...Object.keys(map),...Object.keys(specialMap)])];
   const sec=document.getElementById('settle-section');
   if(names.length===0){sec.innerHTML='<div class="card"><div class="empty">本月尚無達標記錄</div></div>';return;}
   const totalPool=monthly.reduce((s,r)=>s+r.bonus,0);
+  const totalSpecial=Object.values(specialMap).reduce((s,v)=>s+v,0);
+ 
   const card=document.createElement('div');card.className='settle-card';
   const head=document.createElement('div');head.className='settle-head';
-  head.innerHTML='<span>'+ym+' 月份結算</span><span style="font-family:var(--mono);color:var(--green)">獎金池總計 '+fmtMoney(totalPool)+'</span>';
+  head.innerHTML='<span>'+ym+' 月份結算</span><span style="font-family:var(--mono);color:var(--green)">共創 '+fmtMoney(totalPool)+(totalSpecial>0?' + 特調 '+fmtMoney(totalSpecial):'')+'</span>';
   card.appendChild(head);
-  names.sort((a,b)=>map[b].total-map[a].total).forEach(n=>{
+ 
+  names.sort((a,b)=>((map[b]?.total||0)+(specialMap[b]||0))-((map[a]?.total||0)+(specialMap[a]||0))).forEach(n=>{
+    const bonus=map[n]?.total||0;
+    const special=specialMap[n]||0;
+    const grandTotal=bonus+special;
     const row=document.createElement('div');row.className='settle-row';
     const left=document.createElement('div');
     const nm=document.createElement('div');nm.className='settle-name';nm.textContent=n;
-    const det=document.createElement('div');det.className='settle-detail';det.textContent='達標 '+map[n].days+' 天｜平均每次 '+fmtMoney(Math.round(map[n].total/map[n].days));
+    const det=document.createElement('div');det.className='settle-detail';
+    let detArr=[];
+    if(bonus>0)detArr.push('達標 '+map[n].days+' 天（共創 '+fmtMoney(bonus)+'）');
+    if(special>0)detArr.push('特調抽成 '+fmtMoney(special));
+    det.textContent=detArr.join(' ＋ ')||'本月無記錄';
     left.appendChild(nm);left.appendChild(det);
-    const amt=document.createElement('div');amt.className='settle-amt';amt.textContent=fmtMoney(map[n].total);
+    const amt=document.createElement('div');amt.className='settle-amt total-green';amt.textContent=fmtMoney(grandTotal);
     row.appendChild(left);row.appendChild(amt);card.appendChild(row);
   });
   sec.innerHTML='';sec.appendChild(card);
 }
-
-async function addMember(){
-  const inp=document.getElementById('new-member-input');
-  const name=inp.value.trim();
-
-  if(!name){
-    toast('請輸入姓名');
-    return;
-  }
-
-  if(members.find(m=>m.name===name)){
-    toast('此夥伴已存在');
-    return;
-  }
-
-  const member={
-    name,
-    since:todayStr()
-  };
-
+ 
+// ─── 夥伴特調抽成 ───
+function renderSpecialPage(){
+  const monthInput=document.getElementById('special-month');
+  if(!monthInput.value)monthInput.value=thisYM();
+  renderSpecialMemberRows();
+  renderSpecialHistory();
+}
+ 
+function renderSpecialMemberRows(){
+  const container=document.getElementById('special-member-rows');
+  if(members.length===0){container.innerHTML='<div class="empty">請先在「夥伴管理」新增夥伴</div>';return;}
+  const ym=document.getElementById('special-month')?.value||thisYM();
+  const saved=specialRecords.find(s=>s.month===ym);
+  const savedMap={};
+  if(saved&&saved.items)saved.items.forEach(i=>{savedMap[i.name]=i.qty;});
+  container.innerHTML='';
+  members.forEach(m=>{
+    const row=document.createElement('div');row.className='special-member-row';
+    const nameSpan=document.createElement('span');nameSpan.className='special-member-name';nameSpan.textContent=m.name;
+    const qtyInput=document.createElement('input');
+    qtyInput.type='number';qtyInput.min='0';qtyInput.step='1';
+    qtyInput.style.cssText='width:80px;text-align:center;padding:6px 8px;background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text);font-family:var(--mono);font-size:14px;outline:none;flex-shrink:0;';
+    qtyInput.placeholder='0';
+    qtyInput.value=savedMap[m.name]!==undefined?savedMap[m.name]:'';
+    qtyInput.dataset.name=m.name;
+    qtyInput.addEventListener('input',updateSpecialPreview);
+    const resultSpan=document.createElement('span');resultSpan.className='special-member-result';resultSpan.dataset.result=m.name;
+    const qty=savedMap[m.name]||0;
+    resultSpan.textContent=qty>0?fmtMoney(qty*SPECIAL_RATE):'—';
+    row.appendChild(nameSpan);row.appendChild(qtyInput);row.appendChild(resultSpan);
+    container.appendChild(row);
+  });
+  updateSpecialPreview();
+}
+ 
+function updateSpecialPreview(){
+  let total=0;
+  document.querySelectorAll('[data-name]').forEach(input=>{
+    if(input.tagName!=='INPUT')return;
+    const qty=parseInt(input.value)||0;
+    const name=input.dataset.name;
+    const result=document.querySelector('[data-result="'+name+'"]');
+    if(result)result.textContent=qty>0?fmtMoney(qty*SPECIAL_RATE):'—';
+    total+=qty*SPECIAL_RATE;
+  });
+  document.getElementById('special-total-preview').textContent=fmtMoney(total);
+}
+ 
+async function saveSpecial(){
+  const ym=document.getElementById('special-month').value;
+  if(!ym){toast('請選擇月份');return;}
+  const items=[];
+  document.querySelectorAll('[data-name]').forEach(input=>{
+    if(input.tagName!=='INPUT')return;
+    const qty=parseInt(input.value)||0;
+    items.push({name:input.dataset.name,qty});
+  });
+  if(items.length===0){toast('尚無夥伴資料');return;}
+  const record={month:ym,items,savedAt:Date.now()};
+  // 先存到 localStorage（離線也能用）
+  const local=loadLocalSpecial().filter(s=>s.month!==ym);
+  local.push(record);
+  saveLocalSpecial(local);
+  specialRecords=local.sort((a,b)=>b.month.localeCompare(a.month));
   setSyncing();
-
   try{
-    await apiPost({
-      action:'saveMember',
-      member
-    });
-
-    inp.value='';
-
-    // 重新從 Google Sheet 同步
+    await apiPost({action:'saveSpecial',record});
     await loadData();
-
-    refreshPartnerSelect();
-    renderMembers();
-
-    setSynced();
-
-    toast(name+' 已加入 ✓');
-
+    renderSpecialPage();
+    setSynced();toast(ym+' 特調抽成已儲存 ✓');
   }catch(e){
-    setSyncError();
-    toast('新增失敗');
+    // GAS 失敗但 localStorage 已存，仍可顯示
+    renderSpecialPage();
+    setSyncError();toast('已存至本地，但雲端同步失敗，請稍後重試');
   }
 }
-
+ 
+function renderSpecialHistory(){
+  const sec=document.getElementById('special-history-section');
+  if(!specialRecords||specialRecords.length===0){sec.innerHTML='<div class="card"><div class="empty">尚無特調抽成記錄</div></div>';return;}
+  sec.innerHTML='';
+  const sorted=[...specialRecords].sort((a,b)=>b.month.localeCompare(a.month));
+  sorted.forEach(sr=>{
+    const card=document.createElement('div');card.className='settle-card';
+    const total=(sr.items||[]).reduce((s,i)=>s+i.qty*SPECIAL_RATE,0);
+    const head=document.createElement('div');head.className='settle-head';
+    head.innerHTML='<span>'+sr.month+' 特調抽成</span><span style="font-family:var(--mono);color:var(--purple)">合計 '+fmtMoney(total)+'</span>';
+    card.appendChild(head);
+    (sr.items||[]).filter(i=>i.qty>0).sort((a,b)=>b.qty-a.qty).forEach(item=>{
+      const row=document.createElement('div');row.className='settle-row';
+      const left=document.createElement('div');
+      const nm=document.createElement('div');nm.className='settle-name';nm.textContent=item.name;
+      const det=document.createElement('div');det.className='settle-detail';det.textContent=item.qty+' 份 × 30 元';
+      left.appendChild(nm);left.appendChild(det);
+      const amt=document.createElement('div');amt.className='settle-amt purple';amt.textContent=fmtMoney(item.qty*SPECIAL_RATE);
+      row.appendChild(left);row.appendChild(amt);card.appendChild(row);
+    });
+    if((sr.items||[]).filter(i=>i.qty>0).length===0){
+      const empty=document.createElement('div');empty.className='empty';empty.textContent='本月無銷售記錄';card.appendChild(empty);
+    }
+    sec.appendChild(card);
+  });
+}
+ 
+async function addMember(){
+  const inp=document.getElementById('new-member-input');const name=inp.value.trim();
+  if(!name){toast('請輸入姓名');return;}
+  if(members.find(m=>m.name===name)){toast('此夥伴已存在');return;}
+  const member={name,since:todayStr()};
+  setSyncing();
+  try{
+    await apiPost({action:'saveMember',member});
+    inp.value='';await loadData();refreshPartnerSelect();renderMembers();
+    setSynced();toast(name+' 已加入 ✓');
+  }catch(e){setSyncError();toast('新增失敗');}
+}
 async function deleteMemberByName(name){
   if(!confirm('確定移除「'+name+'」？（歷史記錄不受影響）'))return;
   setSyncing();
@@ -462,7 +646,6 @@ async function deleteMemberByName(name){
     setSynced();toast(name+' 已移除');
   }catch(e){setSyncError();toast('移除失敗');}
 }
-
 function renderMembers(){
   document.getElementById('member-count').textContent=members.length;
   const list=document.getElementById('member-list');
@@ -479,23 +662,32 @@ function renderMembers(){
     div.appendChild(info);div.appendChild(btn);list.appendChild(div);
   });
 }
-
 function renderTierTable(){
   const rev=parseInt(document.getElementById('inp-rev').value)||0;
   const cur=getCur(rev);
-  let html='<thead><tr><th>當日營業額</th><th>獎金池</th><th>2人各得</th><th>3人各得</th></tr></thead><tbody>';
+  let html='<thead><tr><th>當日營業額</th><th>獎金池</th><th>占比</th><th>2人各得</th><th>3人各得</th></tr></thead><tbody>';
   TIERS.forEach(t=>{
     const isActive=cur&&cur.min===t.min;
-    html+='<tr class="'+(isActive?'hl':'')+'"><td>'+t.min.toLocaleString()+'</td><td>'+t.pool.toLocaleString()+'</td><td>'+Math.floor(t.pool/2).toLocaleString()+'</td><td>'+Math.floor(t.pool/3).toLocaleString()+'</td></tr>';
+    const pct=((t.pool/t.min)*100).toFixed(1)+'%';
+    const label=t.min>=30000?'30,000 以上（封頂）':t.min.toLocaleString();
+    html+='<tr class="'+(isActive?'hl':'')+'"><td>'+label+'</td><td>'+t.pool.toLocaleString()+'</td><td>'+pct+'</td><td>'+Math.floor(t.pool/2).toLocaleString()+'</td><td>'+Math.floor(t.pool/3).toLocaleString()+'</td></tr>';
   });
   html+='</tbody>';
   document.getElementById('tier-table').innerHTML=html;
 }
-
-function renderAll(){refreshPartnerSelect();renderChips();updateMonth();renderTierTable();}
-
-document.getElementById('inp-date').value=todayStr();
-loadData();
+ 
+function renderAll(){
+  refreshPartnerSelect();renderChips();updateMonth();renderTierTable();
+  if(document.getElementById('page-special').classList.contains('active'))renderSpecialPage();
+}
+ 
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('inp-date').value=todayStr();
+  const sm=document.getElementById('special-month');
+  sm.value=thisYM();
+  sm.addEventListener('change',renderSpecialMemberRows);
+  loadData();
+});
 </script>
 </body>
 </html>
