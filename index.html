@@ -147,9 +147,10 @@ tr:hover td{background:var(--bg3)}
   <p class="sec" style="margin-top:4px">今日記錄</p>
   <div class="card">
     <div class="row2">
-      <div class="ig"><label>日期</label><input type="date" id="inp-date"></div>
+      <div class="ig"><label>日期</label><input type="date" id="inp-date" onchange="calc();renderTierTable()"></div>
       <div class="ig"><label>當日營業額（元）</label><input type="number" id="inp-rev" placeholder="例：20000" min="0" step="1000" oninput="calc()"></div>
     </div>
+    <p class="prog-sub" id="rule-hint" style="margin:-4px 0 10px"></p>
     <div class="ig">
       <label>新增當班夥伴</label>
       <div class="add-row">
@@ -249,24 +250,51 @@ tr:hover td{background:var(--bg3)}
 <!-- 獎金對照表 -->
 <div id="page-tiers" class="page">
   <p class="sec" style="margin-top:4px">聲島共創獎金對照表</p>
-  <div class="card" style="padding:0"><table class="tier-table" id="tier-table"></table></div>
+  <div class="info-note">獎金依「記錄日期」套用對應的級距，當班夥伴平分獎金池。</div>
+  <div id="tier-tables"></div>
 </div>
  
 <script>
-// ─── 新獎金級距：16,000 起，封頂 30,000 / 2,000元 ───
-const TIERS=[
-  {min:16000,pool:200},
-  {min:17000,pool:300},
-  {min:18000,pool:400},
-  {min:19000,pool:500},
-  {min:20000,pool:650},
-  {min:22000,pool:800},
-  {min:24000,pool:1000},
-  {min:26000,pool:1200},
-  {min:28000,pool:1600},
-  {min:30000,pool:2000}
+// ─── 獎金級距：依記錄日期套用版本（新到舊排列）───
+const TIER_VERSIONS=[
+  {from:'2026-11-01',label:'2026/11/1 起（營業 09:00–23:00）',tiers:[
+    {min:18000,pool:200},
+    {min:19000,pool:300},
+    {min:20000,pool:400},
+    {min:21000,pool:500},
+    {min:22000,pool:650},
+    {min:24000,pool:800},
+    {min:26000,pool:1000},
+    {min:28000,pool:1200},
+    {min:30000,pool:1600},
+    {min:32000,pool:2000}
+  ]},
+  {from:'0000-01-01',label:'至 2026/10/31（營業 12:00–23:00）',tiers:[
+    {min:16000,pool:200},
+    {min:17000,pool:300},
+    {min:18000,pool:400},
+    {min:19000,pool:500},
+    {min:20000,pool:650},
+    {min:22000,pool:800},
+    {min:24000,pool:1000},
+    {min:26000,pool:1200},
+    {min:28000,pool:1600},
+    {min:30000,pool:2000}
+  ]}
 ];
+function versionFor(date){const d=normDate(date)||todayStr();return TIER_VERSIONS.find(v=>d>=v.from);}
+function tiersFor(date){return versionFor(date).tiers;}
 const SPECIAL_RATE=30;
+
+// Google Sheet 會把日期轉成時間格式，讀回來變成 UTC（例：2026-10-02T23:00:00.000Z），
+// 加 12 小時再取日期，即可還原成當初輸入的日期（不論試算表時區）。
+function normDate(v){
+  if(v===undefined||v===null||v==='')return '';
+  const s=String(v);
+  if(/^\d{4}-\d{2}-\d{2}T/.test(s)){const t=new Date(s).getTime();if(!isNaN(t))return new Date(t+12*3600e3).toISOString().slice(0,10);}
+  return s.slice(0,10);
+}
+function normMonth(v){const s=String(v||'');return /^\d{4}-\d{2}$/.test(s)?s:normDate(s).slice(0,7);}
  
 let members=[],records=[],specialRecords=[],selectedPartners=[],filterMember='all',settleYM='';
 let GAS_URL='https://script.google.com/macros/s/AKfycbxiG_pbnU07lCBzQt76i5eZdErQkz7OaXKXVYCGpGTW6DlFWdvQanBRN5rUxl9eP7Iy/exec';
@@ -291,9 +319,9 @@ async function loadData(){
   setSyncing();
   try{
     const data=await apiGet();
-    records=data.records||[];
-    members=data.members||[];
-    const gasSpecial=data.specialRecords||[];
+    records=(data.records||[]).map(r=>({...r,date:normDate(r.date)}));
+    members=(data.members||[]).map(m=>({...m,since:normDate(m.since)}));
+    const gasSpecial=(data.specialRecords||[]).map(s=>({...s,month:normMonth(s.month)}));
     const localSpecial=loadLocalSpecial();
     const mergedMap={};
     localSpecial.forEach(s=>{mergedMap[s.month]=s;});
@@ -307,9 +335,9 @@ async function loadData(){
   }
 }
  
-function getBonus(r){for(let i=TIERS.length-1;i>=0;i--)if(r>=TIERS[i].min)return TIERS[i].pool;return 0;}
-function getNext(r){for(let t of TIERS)if(r<t.min)return t;return null;}
-function getCur(r){let c=null;for(let t of TIERS)if(r>=t.min)c=t;return c;}
+function getBonus(r,date){const T=tiersFor(date);for(let i=T.length-1;i>=0;i--)if(r>=T[i].min)return T[i].pool;return 0;}
+function getNext(r,date){for(let t of tiersFor(date))if(r<t.min)return t;return null;}
+function getCur(r,date){let c=null;for(let t of tiersFor(date))if(r>=t.min)c=t;return c;}
 function fmtMoney(n){return n.toLocaleString()+' 元';}
 function todayStr(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0')+'-'+d.getDate().toString().padStart(2,'0');}
 function thisYM(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0');}
@@ -349,15 +377,18 @@ function renderChips(){
 }
 function calc(){
   const rev=parseInt(document.getElementById('inp-rev').value)||0;
+  const date=document.getElementById('inp-date').value||todayStr();
+  const ver=versionFor(date);const T=ver.tiers;const minT=T[0];const capT=T[T.length-1];
+  document.getElementById('rule-hint').textContent='套用級距：'+ver.label+'，最低門檻 '+minT.min.toLocaleString()+' 元';
   const hc=selectedPartners.length||1;
-  const bonus=getBonus(rev);
+  const bonus=getBonus(rev,date);
   const poolEl=document.getElementById('pool-val');
   const perBlock=document.getElementById('per-block');
   const progWrap=document.getElementById('prog-wrap');
   if(rev<=0){poolEl.className='pool-muted';poolEl.textContent='輸入營業額後顯示';perBlock.style.display='none';progWrap.style.display='none';return;}
   progWrap.style.display='block';
-  const cur=getCur(rev);const next=getNext(rev);
-  document.getElementById('tier-cur').textContent=cur?'已達 '+cur.min.toLocaleString()+' 元':'尚未達最低門檻（16,000 元）';
+  const cur=getCur(rev,date);const next=getNext(rev,date);
+  document.getElementById('tier-cur').textContent=cur?'已達 '+cur.min.toLocaleString()+' 元':'尚未達最低門檻（'+minT.min.toLocaleString()+' 元）';
   if(next){
     const base=cur?cur.min:0;
     const pct=Math.min(100,Math.round((rev-base)/(next.min-base)*100));
@@ -367,21 +398,23 @@ function calc(){
   }else{
     document.getElementById('prog-fill').style.width='100%';
     document.getElementById('tier-next').textContent='封頂 🎉';
-    document.getElementById('prog-sub').textContent='封頂獎金池 2,000 元（30,000 元以上）';
+    document.getElementById('prog-sub').textContent='封頂獎金池 '+capT.pool.toLocaleString()+' 元（'+capT.min.toLocaleString()+' 元以上）';
   }
   if(bonus>0){
     poolEl.className='pool-val';poolEl.textContent=fmtMoney(bonus);
     perBlock.style.display='block';
     document.getElementById('per-val').textContent=fmtMoney(Math.floor(bonus/hc));
-  }else{poolEl.className='pool-muted';poolEl.textContent='未達門檻（最低 16,000 元）';perBlock.style.display='none';}
+  }else{poolEl.className='pool-muted';poolEl.textContent='未達門檻（最低 '+minT.min.toLocaleString()+' 元）';perBlock.style.display='none';}
 }
- 
+
 async function addRecord(){
   const rev=parseInt(document.getElementById('inp-rev').value)||0;
   const dateVal=document.getElementById('inp-date').value||todayStr();
   if(!rev){toast('請先輸入營業額');return;}
+  // 隔天早上補記前一天的營業額時，常忘了改日期，跨月時會套錯級距
+  if(dateVal===todayStr()&&new Date().getHours()<12){if(!confirm('現在是上午，這筆是「今天 '+dateVal+'」的營業額嗎？\n若是補記昨天的，請按取消並修改日期。'))return;}
   if(selectedPartners.length===0){if(!confirm('尚未選擇夥伴，確定要記錄嗎？'))return;}
-  const bonus=getBonus(rev);
+  const bonus=getBonus(rev,dateVal);
   const names=[...selectedPartners];
   const per=names.length>0&&bonus>0?Math.floor(bonus/names.length):0;
   const record={id:Date.now(),date:dateVal,rev,bonus,names,per};
@@ -664,16 +697,26 @@ function renderMembers(){
 }
 function renderTierTable(){
   const rev=parseInt(document.getElementById('inp-rev').value)||0;
-  const cur=getCur(rev);
-  let html='<thead><tr><th>當日營業額</th><th>獎金池</th><th>占比</th><th>2人各得</th><th>3人各得</th></tr></thead><tbody>';
-  TIERS.forEach(t=>{
-    const isActive=cur&&cur.min===t.min;
-    const pct=((t.pool/t.min)*100).toFixed(1)+'%';
-    const label=t.min>=30000?'30,000 以上（封頂）':t.min.toLocaleString();
-    html+='<tr class="'+(isActive?'hl':'')+'"><td>'+label+'</td><td>'+t.pool.toLocaleString()+'</td><td>'+pct+'</td><td>'+Math.floor(t.pool/2).toLocaleString()+'</td><td>'+Math.floor(t.pool/3).toLocaleString()+'</td></tr>';
+  const date=document.getElementById('inp-date').value||todayStr();
+  const activeVer=versionFor(date);
+  const cur=getCur(rev,date);
+  const wrap=document.getElementById('tier-tables');wrap.innerHTML='';
+  TIER_VERSIONS.forEach(ver=>{
+    const isCurVer=ver===activeVer;
+    let html='<thead><tr><th>當日營業額</th><th>獎金池</th><th>占比</th><th>3人各得</th><th>4人各得</th><th>5人各得</th></tr></thead><tbody>';
+    ver.tiers.forEach((t,i)=>{
+      const isActive=isCurVer&&cur&&cur.min===t.min;
+      const pct=((t.pool/t.min)*100).toFixed(1)+'%';
+      const label=i===ver.tiers.length-1?t.min.toLocaleString()+' 以上（封頂）':t.min.toLocaleString();
+      html+='<tr class="'+(isActive?'hl':'')+'"><td>'+label+'</td><td>'+t.pool.toLocaleString()+'</td><td>'+pct+'</td>'+[3,4,5].map(n=>'<td>'+Math.floor(t.pool/n).toLocaleString()+'</td>').join('')+'</tr>';
+    });
+    html+='</tbody>';
+    const title=document.createElement('p');title.className='sec';title.style.marginTop='4px';
+    title.textContent=ver.label+(isCurVer?' · 目前套用':'');
+    const card=document.createElement('div');card.className='card';card.style.padding='0';
+    const table=document.createElement('table');table.className='tier-table';table.innerHTML=html;
+    card.appendChild(table);wrap.appendChild(title);wrap.appendChild(card);
   });
-  html+='</tbody>';
-  document.getElementById('tier-table').innerHTML=html;
 }
  
 function renderAll(){
@@ -682,7 +725,7 @@ function renderAll(){
 }
  
 document.addEventListener('DOMContentLoaded',()=>{
-  document.getElementById('inp-date').value=todayStr();
+  document.getElementById('inp-date').value=todayStr();calc();
   const sm=document.getElementById('special-month');
   sm.value=thisYM();
   sm.addEventListener('change',renderSpecialMemberRows);
