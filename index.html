@@ -123,6 +123,11 @@ tr:hover td{background:var(--bg3)}
 .special-member-result{font-size:13px;font-family:var(--mono);color:var(--purple);width:72px;text-align:right;flex-shrink:0}
 .divider{height:1px;background:var(--border);margin:14px 0}
 .info-note{font-size:11px;color:var(--text3);background:var(--bg3);border-radius:var(--radius-sm);padding:8px 12px;margin-bottom:12px;line-height:1.7}
+.notice{font-size:13px;line-height:1.8;color:var(--text2)}
+.notice b{color:var(--text);font-weight:600}
+.notice-title{font-size:14px;font-weight:600;color:var(--gold);margin-bottom:8px}
+.notice-sub{font-size:13px;font-weight:600;color:var(--text);margin-top:10px}
+.notice ul{padding-left:1.2em;margin-top:2px}
 .total-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--border2)}
 .total-label{font-size:12px;color:var(--text2)}
 .total-val{font-size:18px;font-weight:600;font-family:var(--mono);color:var(--green)}
@@ -251,6 +256,20 @@ tr:hover td{background:var(--bg3)}
 <div id="page-tiers" class="page">
   <p class="sec" style="margin-top:4px">聲島共創獎金對照表</p>
   <div class="info-note">獎金依「記錄日期」套用對應的級距，當班夥伴平分獎金池。</div>
+  <div class="card notice">
+    <p class="notice-title">📌 團體獎金計算須知</p>
+    <p class="notice-sub">一、不列入計算的日子</p>
+    <p>以下日子已另外給予加給，當天<b>不列入團體獎金計算，也不需要記錄</b>：</p>
+    <ul>
+      <li><b>雙倍薪資日</b>：依法加倍給薪的日子，例如國定假日出勤。</li>
+      <li><b>特殊給薪日</b>：另有約定給薪方式的日子。</li>
+    </ul>
+    <p class="notice-sub">二、不列入營業額的收入</p>
+    <ul>
+      <li><b>場地租金</b>屬於場地收入，不算團體業績。</li>
+      <li>當天有場地租借時，「當日營業額」請填寫<b>扣除場地租金後</b>的金額，再對照級距表。</li>
+    </ul>
+  </div>
   <div id="tier-tables"></div>
 </div>
  
